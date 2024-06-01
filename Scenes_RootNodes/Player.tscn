@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2ddv2rw2b07q"]
+
+[ext_resource type="Script" path="res://Scripts/Player.cs" id="1_lqvme"]
+
+[node name="Player" type="Node3D" node_paths=PackedStringArray("CameraAnchor", "CameraNode")]
+script = ExtResource("1_lqvme")
+fireInput = &"fire"
+CameraAnchor = NodePath("Node3D")
+CameraNode = NodePath("Node3D/Camera3D")
+MouseSensitivity = 0.3
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Node3D"]

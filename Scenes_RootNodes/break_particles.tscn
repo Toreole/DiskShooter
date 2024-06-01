@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://cnte5cux35yym"]
+
+[sub_resource type="Curve" id="Curve_p2rca"]
+_data = [Vector2(0, 1), 0.0, -2.34199, 0, 0, Vector2(1, 0), -2.30848, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_a6orc"]
+curve = SubResource("Curve_p2rca")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0hypc"]
+angle_min = -508.8
+angle_max = 278.4
+spread = 180.0
+initial_velocity_min = 4.74
+initial_velocity_max = 5.27
+gravity = Vector3(0, -5, 0)
+scale_curve = SubResource("CurveTexture_a6orc")
+
+[sub_resource type="Gradient" id="Gradient_xv1td"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_onlq1"]
+gradient = SubResource("Gradient_xv1td")
+fill = 1
+fill_from = Vector2(0.5, 0.491453)
+fill_to = Vector2(0.517094, 0.0470085)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4vrre"]
+transparency = 1
+albedo_color = Color(0.53, 0.53, 0.53, 1)
+albedo_texture = SubResource("GradientTexture2D_onlq1")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_jelgv"]
+material = SubResource("StandardMaterial3D_4vrre")
+size = Vector2(0.53, 0.545)
+
+[node name="BreakParticles" type="GPUParticles3D"]
+emitting = false
+amount = 13
+lifetime = 0.52
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-6.20833, -4, -4, 12.4167, 8, 8)
+process_material = SubResource("ParticleProcessMaterial_0hypc")
+draw_pass_1 = SubResource("QuadMesh_jelgv")
