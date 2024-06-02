@@ -70,7 +70,7 @@ public partial class Trail : MeshInstance3D
 	public void AppendPoint()
 	{
 		points.Add(GlobalPosition);
-		widths.Add(new Vector3[] { GlobalTransform.Basis.X * startWidth, GlobalTransform.Basis.X * startWidth - GlobalTransform.Basis.X * endWidth });
+		widths.Add(new Vector3[] { GlobalTransform.Basis.Y * startWidth, GlobalTransform.Basis.Y * startWidth - GlobalTransform.Basis.Y * endWidth });
 		lifePoints.Add(0);
 	}
 

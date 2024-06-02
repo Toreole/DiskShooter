@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 public partial class Player : Node3D
 {
@@ -66,6 +67,12 @@ public partial class Player : Node3D
 					meshInstance.MaterialOverride = new StandardMaterial3D();
 					GetTree().Root.AddChild(meshInstance);
 					meshInstance.GlobalPosition = (Vector3)result["position"].Obj;
+					DeleteNodeAfterDelay(meshInstance);
+
+					if(body is FlyingTarget target)
+					{
+						target.Destroy();
+					}
 				}
 			}
 			GD.Print("--------------");
@@ -108,6 +115,12 @@ public partial class Player : Node3D
 			cameraRot.X = Mathf.Clamp(cameraRot.X, -70, 70);
 			CameraNode.RotationDegrees = cameraRot;
 		}
+	}
+
+	private async void DeleteNodeAfterDelay(Node node)
+	{
+		await Task.Delay(1000);
+		node.QueueFree();
 	}
 
 	// Called when the node enters the scene tree for the first time.

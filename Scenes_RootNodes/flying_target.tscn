@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://co8n1hcm1rfyt"]
+
+[ext_resource type="Script" path="res://Scripts/FlyingTarget.cs" id="1_s22xf"]
+[ext_resource type="PackedScene" uid="uid://cnte5cux35yym" path="res://Scenes_RootNodes/break_particles.tscn" id="2_at38s"]
+[ext_resource type="Script" path="res://Scripts/Trail.cs" id="3_5waym"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nwwif"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dol7n"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0scrl"]
+albedo_color = Color(0.364706, 0.847059, 0.278431, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ad1x"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[node name="FlyingTarget" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.31842, 4.18914, -0.0817165)
+linear_velocity = Vector3(-9.27, 4.28, 5.985)
+script = ExtResource("1_s22xf")
+DestroyParticles = ExtResource("2_at38s")
+LeftRightDrift = -53.315
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_nwwif")
+
+[node name="Visual" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_dol7n")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_0scrl")
+
+[node name="Trail" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.486452, 0, 0)
+material_override = SubResource("StandardMaterial3D_1ad1x")
+cast_shadow = 0
+skeleton = NodePath("../..")
+script = ExtResource("3_5waym")
+scaleTexture = false
+scaleAcceleration = 1.1
+lifeSpan = 1.5
+startColor = Color(0, 0.686275, 1, 1)
+endColor = Color(1, 0, 1, 0)

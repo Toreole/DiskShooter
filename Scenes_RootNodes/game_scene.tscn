@@ -1,16 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://cdh8yddwwly8p"]
+[gd_scene load_steps=13 format=3 uid="uid://cdh8yddwwly8p"]
 
 [ext_resource type="PackedScene" uid="uid://d2ddv2rw2b07q" path="res://Scenes_RootNodes/Player.tscn" id="1_ap8ae"]
-[ext_resource type="Script" path="res://Scripts/Trail.cs" id="2_uweyt"]
 [ext_resource type="Script" path="res://Scripts/DiskSpawner.cs" id="2_y67ax"]
-[ext_resource type="PackedScene" uid="uid://cgldg5sotlrmx" path="res://Scenes_RootNodes/DiskScene.tscn" id="3_otuog"]
-[ext_resource type="Script" path="res://Scripts/FlyingTarget.cs" id="6_cl5jm"]
+[ext_resource type="PackedScene" uid="uid://co8n1hcm1rfyt" path="res://Scenes_RootNodes/flying_target.tscn" id="3_jjrgj"]
 [ext_resource type="PackedScene" uid="uid://b6wcer30ekql8" path="res://Art_3D/MainBuilding.glb" id="6_x34oc"]
 [ext_resource type="PackedScene" uid="uid://bkigrl2iqcitt" path="res://Art_3D/Podium.glb" id="7_auyq8"]
 [ext_resource type="PackedScene" uid="uid://c048ojj6av32a" path="res://Art_3D/Roof.glb" id="8_guy8t"]
 [ext_resource type="PackedScene" uid="uid://8vfqimubkv2c" path="res://Art_3D/Hedge.glb" id="8_qaw68"]
 [ext_resource type="PackedScene" uid="uid://dqnbu3vth6ok" path="res://Art_3D/Terrain.glb" id="9_fqaxq"]
-[ext_resource type="PackedScene" uid="uid://cnte5cux35yym" path="res://Scenes_RootNodes/break_particles.tscn" id="10_h425y"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_67v2b"]
 
@@ -26,19 +23,6 @@ ambient_light_energy = 0.0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_p0anm"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_nwwif"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_dol7n"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0scrl"]
-albedo_color = Color(0.364706, 0.847059, 0.278431, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ad1x"]
-transparency = 1
-cull_mode = 2
-shading_mode = 0
-vertex_color_use_as_albedo = true
-
 [node name="GameScene" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_ap8ae")]
@@ -46,10 +30,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57222, 1.70532, -0.298961)
 aimingMouseSensitivity = 0.1
 
 [node name="Environment" type="Node" parent="."]
-
-[node name="Node" type="Node" parent="Environment"]
-script = ExtResource("2_y67ax")
-DiskScene = ExtResource("3_otuog")
 
 [node name="Hedge" parent="Environment" instance=ExtResource("8_qaw68")]
 transform = Transform3D(-0.901946, 0, -0.43185, 0, 1, 0, 0.43185, 0, -0.901946, -14.9781, -0.0615665, 21.9876)
@@ -80,35 +60,12 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -1.676
 [node name="Roof2" parent="Environment" instance=ExtResource("8_guy8t")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 9.01917, 0.44055, 0.0472035)
 
-[node name="FlyingTarget" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.31842, 4.18914, -0.0817165)
-linear_velocity = Vector3(-9.27, 4.28, 5.985)
-script = ExtResource("6_cl5jm")
-DestroyParticles = ExtResource("10_h425y")
-LeftRightDrift = -53.315
+[node name="DiskSpawner" type="Node3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0177, 7.57788, -0.629046)
+script = ExtResource("2_y67ax")
+DiskScene = ExtResource("3_jjrgj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FlyingTarget"]
-shape = SubResource("BoxShape3D_nwwif")
-
-[node name="Visual" type="MeshInstance3D" parent="FlyingTarget"]
-mesh = SubResource("BoxMesh_dol7n")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_0scrl")
-
-[node name="Trail" type="MeshInstance3D" parent="FlyingTarget"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.486452, 0, 0)
-material_override = SubResource("StandardMaterial3D_1ad1x")
-cast_shadow = 0
-skeleton = NodePath("../..")
-script = ExtResource("2_uweyt")
-scaleTexture = false
-startWidth = 1.0
-scaleAcceleration = 0.307786
-lifeSpan = 1.5
-startColor = Color(0, 0.686275, 1, 1)
-endColor = Color(1, 0, 1, 0.0196078)
+[node name="FlyingTarget" parent="." instance=ExtResource("3_jjrgj")]
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
-
-[connection signal="timeout" from="Timer" to="FlyingTarget" method="Destroy"]
