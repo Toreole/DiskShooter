@@ -18,8 +18,6 @@ shading_mode = 0
 vertex_color_use_as_albedo = true
 
 [node name="FlyingTarget" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.31842, 4.18914, -0.0817165)
-linear_velocity = Vector3(-9.27, 4.28, 5.985)
 script = ExtResource("1_s22xf")
 DestroyParticles = ExtResource("2_at38s")
 LeftRightDrift = -53.315

@@ -43,7 +43,6 @@ public partial class FlyingTarget : RigidBody3D
 
 	public void Destroy()
 	{
-		GD.Print("Destroy");
 		var node = DestroyParticles.Instantiate<GpuParticles3D>();
 		node.Emitting = true;
 		this.GetParent().AddChild(node);

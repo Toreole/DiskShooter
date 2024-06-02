@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cdh8yddwwly8p"]
+[gd_scene load_steps=15 format=3 uid="uid://cdh8yddwwly8p"]
 
 [ext_resource type="PackedScene" uid="uid://d2ddv2rw2b07q" path="res://Scenes_RootNodes/Player.tscn" id="1_ap8ae"]
 [ext_resource type="Script" path="res://Scripts/DiskSpawner.cs" id="2_y67ax"]
@@ -23,11 +23,23 @@ ambient_light_energy = 0.0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_p0anm"]
 
+[sub_resource type="SystemFont" id="SystemFont_jia61"]
+font_names = PackedStringArray("Bahnschrift")
+generate_mipmaps = true
+msdf_pixel_range = 32
+msdf_size = 64
+oversampling = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_g18yf"]
+resource_local_to_scene = true
+font = SubResource("SystemFont_jia61")
+font_size = 28
+
 [node name="GameScene" type="Node3D"]
 
 [node name="Player" parent="." node_paths=PackedStringArray("label") instance=ExtResource("1_ap8ae")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57222, 1.70532, -0.298961)
-label = NodePath("../Label")
+label = NodePath("../_UI_Root/score_label")
 aimingMouseSensitivity = 0.1
 
 [node name="Environment" type="Node" parent="."]
@@ -71,7 +83,16 @@ DiskScene = ExtResource("3_jjrgj")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
 
-[node name="Label" type="Label" parent="."]
+[node name="_UI_Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="score_label" type="Label" parent="_UI_Root"]
 offset_right = 40.0
 offset_bottom = 23.0
-text = "hello"
+text = "12345678"
+label_settings = SubResource("LabelSettings_g18yf")
