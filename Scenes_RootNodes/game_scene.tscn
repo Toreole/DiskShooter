@@ -43,6 +43,7 @@ vertex_color_use_as_albedo = true
 
 [node name="Player" parent="." instance=ExtResource("1_ap8ae")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57222, 1.70532, -0.298961)
+aimingMouseSensitivity = 0.1
 
 [node name="Environment" type="Node" parent="."]
 

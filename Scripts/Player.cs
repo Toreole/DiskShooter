@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Diagnostics;
+using System.Linq;
 
 public partial class Player : Node3D
 {
@@ -9,22 +11,79 @@ public partial class Player : Node3D
 
 	[Export]
 	public StringName fireInput;
+	[Export]
+	private StringName aimInput;
+
+	[Export] 
+	private AnimationPlayer animator;
 
 	[Export]
 	public Node3D CameraAnchor { get; set; }
 	[Export]
-	public Node3D CameraNode { get; set; }
+	public Camera3D CameraNode { get; set; }
 	[Export]
 	public float MouseSensitivity { get; set; }
+	[Export]
+	private float aimingMouseSensitivity;
 
 	[Export]
 	public int[] Numbers { get; set; }
 
+	private bool isAiming = false;
+
 	public override void _Input(InputEvent @event)
 	{
+		if(@event.AsText() == "Escape")
+		{
+			Input.MouseMode = 0;
+		}
+
 		if (@event.IsAction(fireInput))
 		{
+			
+			GD.Print("Fire");
+			var spaceState = GetWorld3D().DirectSpaceState;
 
+			var size = GetTree().Root.Size;
+			var center = new Vector2(size.X * 0.5f, size.Y * 0.5f);
+			var from = CameraNode.ProjectRayOrigin(center);
+			var to = from + CameraNode.ProjectRayNormal(center) * 1000f;
+			var query = PhysicsRayQueryParameters3D.Create(from, to);
+
+			var result = spaceState.IntersectRay(query);
+			if (result != null && result.Count > 0)
+			{
+				var collider = result["collider"];
+				if (collider.Obj is PhysicsBody3D body)
+				{
+					GD.Print(body.GetType().Name);
+					GD.Print(body.Name);
+					GD.Print(body.GetPath());
+
+					SphereMesh sphere = new();
+					MeshInstance3D meshInstance = new MeshInstance3D();
+					meshInstance.Mesh = sphere;
+					meshInstance.MaterialOverride = new StandardMaterial3D();
+					GetTree().Root.AddChild(meshInstance);
+					meshInstance.GlobalPosition = (Vector3)result["position"].Obj;
+				}
+			}
+			GD.Print("--------------");
+		}
+		else if (@event.IsAction(aimInput))
+		{
+			if (@event.IsPressed())
+			{
+				animator.CurrentAnimation = "aiming_pos";
+				animator.Play();
+				isAiming = true;
+			}
+			else
+			{
+				animator.CurrentAnimation = "default_pos";
+				animator.Play();
+				isAiming = false;
+			}
 		}
 		if(@event.IsAction("move_left"))
 		{
@@ -41,8 +100,9 @@ public partial class Player : Node3D
 		if (@event is InputEventMouseMotion && Input.MouseMode == Input.MouseModeEnum.Captured)
 		{
 			InputEventMouseMotion mouseEvent = @event as InputEventMouseMotion;
-			CameraAnchor.RotateY(Mathf.DegToRad(-mouseEvent.Relative.X * MouseSensitivity));
-			CameraNode.RotateX(Mathf.DegToRad(-mouseEvent.Relative.Y * MouseSensitivity));
+			var sensitivy = isAiming ? aimingMouseSensitivity : MouseSensitivity;
+			CameraAnchor.RotateY(Mathf.DegToRad(-mouseEvent.Relative.X * sensitivy));
+			CameraNode.RotateX(Mathf.DegToRad(-mouseEvent.Relative.Y * sensitivy));
 
 			Vector3 cameraRot = CameraNode.RotationDegrees;
 			cameraRot.X = Mathf.Clamp(cameraRot.X, -70, 70);
@@ -57,6 +117,10 @@ public partial class Player : Node3D
 		Input.UseAccumulatedInput = false;
 		
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+
+		//to avoid snapping on the first aim
+		animator.CurrentAnimation = "default_pos";
+		animator.Play();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
