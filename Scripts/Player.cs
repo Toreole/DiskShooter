@@ -17,6 +17,9 @@ public partial class Player : Node3D
 
 	[Export] 
 	private AnimationPlayer animator;
+	[Export]
+	private Label? label;
+
 
 	[Export]
 	public Node3D CameraAnchor { get; set; }
@@ -32,6 +35,8 @@ public partial class Player : Node3D
 
 	private bool isAiming = false;
 
+	private int score = 0;
+
 	public override void _Input(InputEvent @event)
 	{
 		if(@event.AsText() == "Escape")
@@ -42,7 +47,7 @@ public partial class Player : Node3D
 		if (@event.IsAction(fireInput))
 		{
 			
-			GD.Print("Fire");
+			//GD.Print("Fire");
 			var spaceState = GetWorld3D().DirectSpaceState;
 
 			var size = GetTree().Root.Size;
@@ -57,14 +62,16 @@ public partial class Player : Node3D
 				var collider = result["collider"];
 				if (collider.Obj is PhysicsBody3D body)
 				{
-					GD.Print(body.GetType().Name);
-					GD.Print(body.Name);
-					GD.Print(body.GetPath());
+					//GD.Print(body.GetType().Name);
+					//GD.Print(body.Name);
+					//GD.Print(body.GetPath());
 
 					SphereMesh sphere = new();
-					MeshInstance3D meshInstance = new MeshInstance3D();
-					meshInstance.Mesh = sphere;
-					meshInstance.MaterialOverride = new StandardMaterial3D();
+					MeshInstance3D meshInstance = new()
+					{
+						Mesh = sphere,
+						MaterialOverride = new StandardMaterial3D()
+					};
 					GetTree().Root.AddChild(meshInstance);
 					meshInstance.GlobalPosition = (Vector3)result["position"].Obj;
 					DeleteNodeAfterDelay(meshInstance);
@@ -72,10 +79,13 @@ public partial class Player : Node3D
 					if(body is FlyingTarget target)
 					{
 						target.Destroy();
+						score++;
+						if (label != null)
+							label.Text = score.ToString();
 					}
 				}
 			}
-			GD.Print("--------------");
+			//GD.Print("--------------");
 		}
 		else if (@event.IsAction(aimInput))
 		{
@@ -126,6 +136,7 @@ public partial class Player : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+
 		GD.Print("Player Ready");
 		Input.UseAccumulatedInput = false;
 		
