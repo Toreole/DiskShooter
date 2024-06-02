@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cdh8yddwwly8p"]
+[gd_scene load_steps=16 format=3 uid="uid://cdh8yddwwly8p"]
 
 [ext_resource type="PackedScene" uid="uid://d2ddv2rw2b07q" path="res://Scenes_RootNodes/Player.tscn" id="1_ap8ae"]
 [ext_resource type="Script" path="res://Scripts/DiskSpawner.cs" id="2_y67ax"]
@@ -34,6 +34,8 @@ oversampling = 1.0
 resource_local_to_scene = true
 font = SubResource("SystemFont_jia61")
 font_size = 28
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_sfbi6"]
 
 [node name="GameScene" type="Node3D"]
 
@@ -74,11 +76,14 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -1.676
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 9.01917, 0.44055, 0.0472035)
 
 [node name="DiskSpawner" type="Node3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0177, 7.57788, -0.629046)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.71425, 10.6167, -0.629046)
 script = ExtResource("2_y67ax")
 DiskScene = ExtResource("3_jjrgj")
-
-[node name="FlyingTarget" parent="." instance=ExtResource("3_jjrgj")]
+diskVelocityMinimum = Vector3(-18, 4, -3)
+diskVelocityMaximum = Vector3(-25, 7, 3)
+spawnIntervalMin = 1.5
+spawnIntervalMax = 3.0
+maxAbsDrift = 14.0
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
@@ -92,7 +97,38 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="score_label" type="Label" parent="_UI_Root"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "12345678"
 label_settings = SubResource("LabelSettings_g18yf")
+
+[node name="TextureRect" type="TextureRect" parent="_UI_Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -7.5
+offset_right = 1.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_sfbi6")
+
+[node name="TextureRect2" type="TextureRect" parent="_UI_Root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -1.0
+offset_right = 7.5
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_sfbi6")

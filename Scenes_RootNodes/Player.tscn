@@ -3,6 +3,28 @@
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_lqvme"]
 [ext_resource type="PackedScene" uid="uid://cobxnxqb1vmrr" path="res://Art_3D/Rifle.glb" id="2_u5uth"]
 
+[sub_resource type="Animation" id="Animation_pdc72"]
+resource_name = "aiming_pos"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rifle")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.11, -0.02)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:fov")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [60.0]
+}
+
 [sub_resource type="Animation" id="Animation_bysvv"]
 resource_name = "default_pos"
 tracks/0/type = "position_3d"
@@ -30,28 +52,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [75.0]
-}
-
-[sub_resource type="Animation" id="Animation_pdc72"]
-resource_name = "aiming_pos"
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Rifle")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.11, -0.02)
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:fov")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.4),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [60.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_butew"]
